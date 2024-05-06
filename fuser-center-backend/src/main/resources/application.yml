@@ -6,6 +6,9 @@ spring:
     url: jdbc:mysql://localhost:3306/user_center?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: admin
+  session:
+    timeout: 864000
+
 server:
   port: 8080
 
