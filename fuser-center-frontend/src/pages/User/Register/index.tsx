@@ -8,7 +8,8 @@ import {
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import {LoginForm, ProFormText,} from '@ant-design/pro-components';
-import {history, useModel} from '@umijs/max';
+import {useModel} from '@umijs/max';
+import {history} from 'umi';
 import {Alert, message, Tabs} from 'antd';
 import {createStyles} from 'antd-style';
 import React, {useState} from 'react';
@@ -95,9 +96,19 @@ const Register: React.FC = () => {
       if (id >= 0) {
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/user/login');
+        // const urlParams = new URL(window.location.href).searchParams;
+        // // history.push(urlParams.get('redirect') || '/user/login');
+        // history.push('/user/login');
+        // return;
+        /** 此方法会跳转到 redirect 参数所在的位置 */
+        if (!history) return;
+        const {query} = history.location;
+        history.push({
+          pathname: '/user/login',
+          query,
+        });
         return;
+
       } else {
         throw new Error(`Register error id = ${id}`);
       }
