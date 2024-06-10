@@ -1,10 +1,12 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import { request } from 'umi';
 
 /** 获取当前的用户 GET /api/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>('/api/user/current', {
+  return request<{
+    data: API.CurrentUser;
+  }>('/api/user/current', {
     method: 'GET',
     ...(options || {}),
   });
@@ -18,7 +20,7 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/user/login */
+/** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.LoginResult>('/api/user/login', {
     method: 'POST',
@@ -30,7 +32,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
-/** 登录接口 POST /api/user/register */
+/** 登注册口 POST /api/user/register */
 export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {
   return request<API.RegisterResult>('/api/user/register', {
     method: 'POST',
@@ -78,14 +80,11 @@ export async function rule(
   });
 }
 
-/** 更新规则 PUT /api/rule */
+/** 新建规则 PUT /api/rule */
 export async function updateRule(options?: { [key: string]: any }) {
   return request<API.RuleListItem>('/api/rule', {
-    method: 'POST',
-    data:{
-      method: 'update',
-      ...(options || {}),
-    }
+    method: 'PUT',
+    ...(options || {}),
   });
 }
 
@@ -93,20 +92,14 @@ export async function updateRule(options?: { [key: string]: any }) {
 export async function addRule(options?: { [key: string]: any }) {
   return request<API.RuleListItem>('/api/rule', {
     method: 'POST',
-    data:{
-      method: 'post',
-      ...(options || {}),
-    }
+    ...(options || {}),
   });
 }
 
 /** 删除规则 DELETE /api/rule */
 export async function removeRule(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/rule', {
-    method: 'POST',
-    data:{
-      method: 'delete',
-      ...(options || {}),
-    }
+    method: 'DELETE',
+    ...(options || {}),
   });
 }

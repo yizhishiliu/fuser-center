@@ -1,15 +1,10 @@
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
-import React from 'react';
-
 const Footer: React.FC = () => {
-  const defaultMessage = '大狐狸出品';
+  const defaultMessage = '一之十六出品';
   const currentYear = new Date().getFullYear();
   return (
     <DefaultFooter
-      style={{
-        background: 'none',
-      }}
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
@@ -26,7 +21,7 @@ const Footer: React.FC = () => {
         },
         {
           key: 'github',
-          title: <><GithubOutlined />大狐狸 Github</>,
+          title: <><GithubOutlined />一之十六 Github</>,
           href: 'https://github.com/Mingdaj',
           blankTarget: true,
         },
@@ -34,5 +29,4 @@ const Footer: React.FC = () => {
     />
   );
 };
-
 export default Footer;

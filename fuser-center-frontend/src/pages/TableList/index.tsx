@@ -10,7 +10,6 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
-import '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
@@ -88,12 +87,12 @@ const TableList: React.FC = () => {
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
    *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /**
    * @en-US The pop-up window of the distribution update window
    * @zh-CN 分布更新窗口的弹窗
    * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
@@ -181,7 +180,7 @@ const TableList: React.FC = () => {
         <a
           key="config"
           onClick={() => {
-            handleUpdateModalOpen(true);
+            handleUpdateModalVisible(true);
             setCurrentRow(record);
           }}
         >
@@ -207,7 +206,7 @@ const TableList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalOpen(true);
+              handleModalVisible(true);
             }}
           >
             <PlusOutlined /> 新建
@@ -255,12 +254,12 @@ const TableList: React.FC = () => {
       <ModalForm
         title={'新建规则'}
         width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
+        visible={createModalVisible}
+        onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
           const success = await handleAdd(value as API.RuleListItem);
           if (success) {
-            handleModalOpen(false);
+            handleModalVisible(false);
             if (actionRef.current) {
               actionRef.current.reload();
             }
@@ -283,7 +282,7 @@ const TableList: React.FC = () => {
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
           if (success) {
-            handleUpdateModalOpen(false);
+            handleUpdateModalVisible(false);
             setCurrentRow(undefined);
             if (actionRef.current) {
               actionRef.current.reload();
@@ -291,18 +290,18 @@ const TableList: React.FC = () => {
           }
         }}
         onCancel={() => {
-          handleUpdateModalOpen(false);
+          handleUpdateModalVisible(false);
           if (!showDetail) {
             setCurrentRow(undefined);
           }
         }}
-        updateModalOpen={updateModalOpen}
+        updateModalVisible={updateModalVisible}
         values={currentRow || {}}
       />
 
       <Drawer
         width={600}
-        open={showDetail}
+        visible={showDetail}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);

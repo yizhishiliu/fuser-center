@@ -1,4 +1,3 @@
-import '@umijs/max';
 import { Button, message, notification } from 'antd';
 import defaultSettings from '../config/defaultSettings';
 const { pwa } = defaultSettings;
@@ -60,7 +59,7 @@ if (pwa) {
       <Button
         type="primary"
         onClick={() => {
-          notification.destroy(key);
+          notification.close(key);
           reloadSW();
         }}
       >

@@ -1,7 +1,8 @@
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import {ProTable, TableDropdown} from '@ant-design/pro-components';
-import {useRef} from 'react';
-import {searchUsers} from "@/services/ant-design-pro/api";
+import React, { useRef } from 'react';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
+import ProTable, { TableDropdown } from '@ant-design/pro-table';
+import { searchUsers } from "@/services/ant-design-pro/api";
+import {Image} from "antd";
 
 const columns: ProColumns<API.CurrentUser>[] = [
   {
@@ -22,11 +23,11 @@ const columns: ProColumns<API.CurrentUser>[] = [
   {
     title: '头像',
     dataIndex: 'avatarUrl',
-    render: (_, record) => {
+    render: (_, record) => (
       <div>
         <Image src={record.avatarUrl} width={100} />
       </div>
-    },
+    ),
   },
   {
     title: '性别',
@@ -65,41 +66,7 @@ const columns: ProColumns<API.CurrentUser>[] = [
     title: '创建时间',
     dataIndex: 'createTime',
     valueType: 'date',
-  },
-  // {
-  //   disable: true,
-  //   title: '状态',
-  //   dataIndex: 'state',
-  //   filters: true,
-  //   onFilter: true,
-  //   ellipsis: true,
-
-  // },
-  // {
-  //   disable: true,
-  //   title: '标签',
-  //   dataIndex: 'labels',
-  //   search: false,
-  //   renderFormItem: (_, { defaultRender }) => {
-  //     return defaultRender(_);
-  //   },
-  //   render: (_, record) => (
-  //     <Space>
-  //       {record.labels.map(({ name, color }) => (
-  //         <Tag color={color} key={name}>
-  //           {name}
-  //         </Tag>
-  //       ))}
-  //     </Space>
-  //   ),
-  // },
-  {
-    title: '创建时间',
-    key: 'showTime',
-    dataIndex: 'created_at',
-    valueType: 'date',
     sorter: true,
-    hideInSearch: true,
   },
   {
     title: '操作',
