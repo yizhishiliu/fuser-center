@@ -16,23 +16,23 @@ public class BaseResponse<T> implements Serializable {
 
     private int code;
 
-    private String message;
-
     private T data;
 
-    public BaseResponse(int code, String message, T data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
-    }
+    private String message;
 
-    public BaseResponse(int code, String message) {
+    public BaseResponse(int code, T data, String message) {
         this.code = code;
+        this.data = data;
         this.message = message;
     }
 
     public BaseResponse(int code, T data) {
         this.code = code;
         this.data = data;
+    }
+
+    public BaseResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }
