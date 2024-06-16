@@ -35,15 +35,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private static final String SALT = "ada";
 
     @Override
-    public long userRegister(String userAccount, String userPassword, String checkPassword) {
+    public long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode) {
         // 1. 校验
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
+        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, planetCode)) {
             return -1;
         }
         if (userAccount.length() < 4) {
             return -1;
         }
         if (userPassword.length() < 6 || checkPassword.length() < 6) {
+            return -1;
+        }
+        if (planetCode.length() > 5) {
             return -1;
         }
         // 账户不能包含特殊字符
@@ -65,6 +68,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return -1;
         }
 
+        // 用户唯一数字编号planetCode不能重复
+        QueryWrapper<User> planetQueryWrapper = new QueryWrapper<>();
+        planetQueryWrapper.eq("planetCode", planetCode);
+        count = userMapper.selectCount(planetQueryWrapper);
+        if (count > 0) {
+            return -1;
+        }
+
         // 2. 加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
 
@@ -72,6 +83,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
+        user.setPlanetCode(planetCode);
+        // 将用户名默认设置为账户名（防止前端加载个人信息时，一直在加载）
+        user.setUsername(userAccount);
         boolean saveResult = this.save(user);
         if (!saveResult) {
             return -1;

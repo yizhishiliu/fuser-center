@@ -40,10 +40,10 @@ class UserServiceTest {
 
     @Test
     void userRegister() throws NoSuchAlgorithmException {
-        long userId = userService.userRegister("test", "123456", "123456");
+        long userId = userService.userRegister("test", "123456", "123456", "123456");
         Assertions.assertEquals(-1, userId);
 
-        long userId2 = userService.userRegister("te st", "123456", "123456");
+        long userId2 = userService.userRegister("te st", "123456", "123456", "123456");
         Assertions.assertEquals(-1, userId);
     }
 }
