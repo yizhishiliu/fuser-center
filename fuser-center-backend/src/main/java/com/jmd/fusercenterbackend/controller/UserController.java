@@ -56,8 +56,15 @@ public class UserController {
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
             return null;
         }
-
         return userService.userLogin(userAccount, userPassword, request);
+    }
+
+    @PostMapping("/logout")
+    public Integer userLogout(HttpServletRequest request) {
+        if (request == null) {
+            return null;
+        }
+        return userService.userLogout(request);
     }
 
     @GetMapping("/current")
