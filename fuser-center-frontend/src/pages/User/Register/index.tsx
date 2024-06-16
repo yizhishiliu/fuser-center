@@ -1,11 +1,12 @@
 import {register} from '@/services/ant-design-pro/api';
-import { ProFormText } from '@ant-design/pro-components';
+import {LoginForm, ProFormText} from '@ant-design/pro-components';
 import {message, Tabs} from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import React, {useState} from 'react';
 import {history} from 'umi';
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {BLOG_LINK, SYSTEM_LOGO} from "@/constants";
+import styles from './index.less';
 
 const Register: React.FC = () => {
   const [type, setType] = useState<string>('account');
@@ -112,6 +113,25 @@ const Register: React.FC = () => {
                     min: 6,
                     type: 'string',
                     message: '确认密码不小于6位'
+                  }
+                ]}
+              />
+              <ProFormText.Password
+                name="planetCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined/>,
+                }}
+                placeholder='请输入你的唯一数字身份: '
+                rules={[
+                  {
+                    required: true,
+                    message: '唯一数字身份是必填项！',
+                  },
+                  {
+                    max: 5,
+                    type: 'string',
+                    message: '唯一数字身份不大于6位'
                   }
                 ]}
               />
