@@ -2,6 +2,7 @@ package com.jmd.fusercenterbackend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jmd.fusercenterbackend.common.BaseResponse;
+import com.jmd.fusercenterbackend.common.ErrorCode;
 import com.jmd.fusercenterbackend.common.ResultUtils;
 import com.jmd.fusercenterbackend.model.domain.User;
 import com.jmd.fusercenterbackend.model.domain.request.UserLoginRequest;
@@ -36,7 +37,7 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
@@ -53,7 +54,7 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
@@ -67,7 +68,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         int result =  userService.userLogout(request);
         return ResultUtils.success(result);
@@ -78,7 +79,7 @@ public class UserController {
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         long userId = currentUser.getId();
         User user = userService.getById(userId);
@@ -103,10 +104,10 @@ public class UserController {
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteUser(@RequestBody long id, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         if (id <= 0) {
-            return null;
+            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
         }
         boolean result = userService.removeById(id);
         return ResultUtils.success(result);
