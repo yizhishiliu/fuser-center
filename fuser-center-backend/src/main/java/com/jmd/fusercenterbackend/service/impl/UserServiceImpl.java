@@ -2,6 +2,8 @@ package com.jmd.fusercenterbackend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jmd.fusercenterbackend.common.ErrorCode;
+import com.jmd.fusercenterbackend.exception.BusinessException;
 import com.jmd.fusercenterbackend.model.domain.User;
 import com.jmd.fusercenterbackend.service.UserService;
 import com.jmd.fusercenterbackend.mapper.UserMapper;
@@ -38,16 +40,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, planetCode)) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
         }
         if (userAccount.length() < 4) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户长度小于4位");
         }
         if (userPassword.length() < 6 || checkPassword.length() < 6) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码小于6位");
         }
         if (planetCode.length() > 5) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "数字标识大于5位");
         }
         // 账户不能包含特殊字符
         // 字符串中只包含字母和数字

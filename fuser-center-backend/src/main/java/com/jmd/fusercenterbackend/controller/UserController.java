@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jmd.fusercenterbackend.common.BaseResponse;
 import com.jmd.fusercenterbackend.common.ErrorCode;
 import com.jmd.fusercenterbackend.common.ResultUtils;
+import com.jmd.fusercenterbackend.exception.BusinessException;
 import com.jmd.fusercenterbackend.model.domain.User;
 import com.jmd.fusercenterbackend.model.domain.request.UserLoginRequest;
 import com.jmd.fusercenterbackend.model.domain.request.UserRegisterRequest;
@@ -90,7 +91,7 @@ public class UserController {
     @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String username, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return ResultUtils.success(new ArrayList<>());
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNoneBlank(username)) {

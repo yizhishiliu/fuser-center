@@ -9,11 +9,11 @@ package com.jmd.fusercenterbackend.common;
  */
 public enum ErrorCode {
 
-    SUCCESS_CODE(0, "OK", "成功"),
-    PARAMS_ERROR(40000, "请求参数错误", "请求参数错误"),
-    PARAMS_NULL_ERROR(40001, "请求参数为空", "请求参数为空"),
-    NOT_LOGIN(40100, "未登录", "未登录"),
-    NOT_AUTH(40101, "无权限", "无权限");
+    SUCCESS_CODE(0, "OK", ""),
+    PARAMS_ERROR(40000, "请求参数错误", ""),
+    PARAMS_NULL_ERROR(40001, "请求参数为空", ""),
+    NOT_LOGIN(40100, "未登录", ""),
+    NOT_AUTH(40101, "无权限", "");
 
     /**
      * 状态码
