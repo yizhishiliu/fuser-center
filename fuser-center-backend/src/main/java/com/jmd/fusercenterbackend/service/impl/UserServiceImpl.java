@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, planetCode)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         if (userAccount.length() < 4) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户长度小于4位");
@@ -57,17 +57,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         // !matcher.find()
         if (!matcher.matches()) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户包含特殊字符");
         }
         if (!userPassword.equals(checkPassword)) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
         }
         // 账户不能重复（这里查询数据库，应该放到后面，提升性能）
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("userAccount", userAccount);
         long count = userMapper.selectCount(userQueryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "此账户已注册");
         }
 
         // 用户唯一数字编号planetCode不能重复
@@ -75,7 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         planetQueryWrapper.eq("planetCode", planetCode);
         count = userMapper.selectCount(planetQueryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "此数字身份已存在");
         }
 
         // 2. 加密
@@ -90,7 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUsername(userAccount);
         boolean saveResult = this.save(user);
         if (!saveResult) {
-            return -1;
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册服务错误");
         }
 
         return user.getId();
@@ -100,13 +100,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User userLogin(String userAccount, String userPassword, HttpServletRequest request) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "登录参数为空");
         }
         if (userAccount.length() < 4) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户长度小于4位");
         }
         if (userPassword.length() < 6) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码小于6位");
         }
         // 账户不能包含特殊字符
         // 字符串中只包含字母和数字
@@ -114,7 +114,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         // !matcher.find()
         if (!matcher.matches()) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "账户包含特殊字符");
         }
 
         // 2. 加密
@@ -128,7 +128,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 用户不存在
         if (user == null) {
             log.info("user login failed, userAccount cannot match userPassword");
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "此账户未注册");
         }
 
         // 3. 用户脱敏
@@ -148,7 +148,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getSafetyUser(User originUser) {
         if (originUser == null)  {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         User safetyUser = new User();
         safetyUser.setId(originUser.getId());

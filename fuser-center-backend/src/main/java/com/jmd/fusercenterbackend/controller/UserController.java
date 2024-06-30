@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,14 +37,14 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
         String planetCode = userRegisterRequest.getPlanetCode();
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, planetCode)) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
 
         Long result = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
@@ -55,12 +54,12 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         User user = userService.userLogin(userAccount, userPassword, request);
         return ResultUtils.success(user);
@@ -69,7 +68,7 @@ public class UserController {
     @PostMapping("/logout")
     public BaseResponse<Integer> userLogout(HttpServletRequest request) {
         if (request == null) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_NULL_ERROR, "参数为空");
         }
         int result =  userService.userLogout(request);
         return ResultUtils.success(result);
@@ -80,7 +79,7 @@ public class UserController {
         Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
         User currentUser = (User) userObj;
         if (currentUser == null) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.NOT_LOGIN, "用户未登录");
         }
         long userId = currentUser.getId();
         User user = userService.getById(userId);
@@ -91,7 +90,7 @@ public class UserController {
     @GetMapping("/search")
     public BaseResponse<List<User>> searchUsers(String username, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.NOT_AUTH, "非管理员，无权限");
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNoneBlank(username)) {
@@ -105,10 +104,10 @@ public class UserController {
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteUser(@RequestBody long id, HttpServletRequest request) {
         if (!isAdmin(request)) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.NOT_AUTH, "非管理员，无权限");
         }
         if (id <= 0) {
-            return new BaseResponse<>(ErrorCode.PARAMS_ERROR);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数错误");
         }
         boolean result = userService.removeById(id);
         return ResultUtils.success(result);
