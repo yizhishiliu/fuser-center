@@ -21,8 +21,8 @@ const Register: React.FC = () => {
 
     try {
       // 注册
-      const id = await register(values);
-      if (id) {
+      const res = await register(values);
+      if (res.code === 0 && res.data > 0) {
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
         /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -32,11 +32,13 @@ const Register: React.FC = () => {
           pathname: '/user/login',
           query,
         });
+        return;
+      } else {
+        throw new Error(res.description);
       }
-      return;
-    } catch (error) {
+    } catch (error: any) {
       const defaultLoginFailureMessage = '注册失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      message.error(error.message ?? defaultLoginFailureMessage);
     }
   };
   return (
