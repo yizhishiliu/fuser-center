@@ -98,7 +98,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.jmd.fusercenterbackend.FuserCenterBackendApplication</mainClass>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>
