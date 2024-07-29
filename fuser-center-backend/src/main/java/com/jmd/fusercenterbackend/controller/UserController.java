@@ -82,7 +82,9 @@ public class UserController {
             throw new BusinessException(ErrorCode.NOT_LOGIN, "用户未登录");
         }
         long userId = currentUser.getId();
+        // 从db中获取实际用户信息
         User user = userService.getById(userId);
+        // 用户信息脱敏
         User safetyUser = userService.getSafetyUser(user);
         return ResultUtils.success(safetyUser);
     }
