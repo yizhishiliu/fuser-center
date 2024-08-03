@@ -32,3 +32,5 @@
 - 采用Docker容器部署后端项目，Nginx部署前端项目，并且使用宝塔面板进行运维监控；
 - 通过Spring Boot的多套application-{env}.yml配置文件实现多环境，并使用--spring.profiles.active=prod参数实现生产环境部署；
 - 使用Nginx网关统一接收前后端请求，并采用其proxy_pass（反向代理）配置解决跨域访问问题。
+
+**主页+V一起交流学习**
