@@ -2,6 +2,8 @@
 
 小狐用户中心，基于 Spring Boot + React 的一站式用户管理系统，实现了用户注册登录、查询管理等功能。
 
+![image](https://github.com/user-attachments/assets/a3b1b101-f657-42ee-b844-2606c6af5a72)
+
 #### 业务流程
 
 ![image](https://github.com/user-attachments/assets/9b086138-421f-42a9-9beb-3234764ae723)
