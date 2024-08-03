@@ -2,13 +2,15 @@
 小狐用户中心，基于 Spring Boot + React 的一站式用户管理系统，实现了用户注册登录、查询管理等功能。
 
 #### 业务流程
-![image](https://github.com/user-attachments/assets/ab8ca4c9-755a-470f-8ef9-b83e96d7a6e0)
+
+![image](https://github.com/user-attachments/assets/9b086138-421f-42a9-9beb-3234764ae723)
+
 
 
 #### 技术选型
-● 前端
-  ○ Ant Design Pro
-● 后端
+- 前端
+-- Ant Design Pro
+- 后端
   ○ Spring Boot
   ○ MyBatis-Plus
   ○ MySQL
